@@ -1,5 +1,3 @@
--*- mode:org -*-
-
 * Algorithms 1 - Princeton - 6 Weeks
 
 - Book
