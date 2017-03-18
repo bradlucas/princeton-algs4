@@ -1,0 +1,75 @@
+* Week 6
+** Overview
+We conclude the course by considering hash tables, a data structure
+that achieves constant-time performance for core symbol table
+operations, provided that search keys are standard data types or
+simply defined. Then we consider several fundamental (and useful)
+examples of symbol-table clients.
+
+Lecture: Hash Tables. We begin by describing the desirable properties
+of hash function and how to implement them in Java, including a
+fundamental tenet known as the uniform hashing assumption that
+underlies the potential success of a hashing application. Then, we
+consider two strategies for implementing hash tables—separate chaining
+and linear probing. Both strategies yield constant-time performance
+for search and insert under the uniform hashing assumption. We
+conclude with applications of symbol tables including sets, dictionary
+clients, indexing clients, and sparse vectors.
+
+Exercises. (Sorry, we are still waiting for Coursera to migrate the
+exercises from the old platform.) Drill exercises on the lecture
+material.
+
+Final exam. (Sorry, we are still waiting for Coursera to migrate the
+final exam from the old platform.) The final exam is cumulative and
+designed to make sure you understand how each algorithm works and when
+it is effective. The final will not involve Java programming.
+
+Job Interview Questions. Algorithmic interview questions based on the
+lecture material.
+
+Suggested readings. Section 3.4 in Algorithms, 4th edition.
+
+** Hash Tables
+*** Collision Resolution
+- Separate Chaining
+  - Easier to implement detel
+  - Performance degrades gracefully
+  - Clustering less sensitive to peorrly designed has hash function
+- Linear Probing
+  - Less wasted space
+  - Better cache performance
+
+** Interview Questions
+*** 4-SUM. Given an array a[] of n integers, the 4-SUM problem is to determine if there exist 
+distinct indices i, j, k, and l such that a[i]+a[j]=a[k]+a[l]. 
+Design an algorithm for the 4-SUM problem that takes time proportional to n2 (under suitable technical assumptions).
+
+#+BEGIN_EXAMPLE
+generate all the pairwise sums and store them in a hash table using the result as a key
+#+END_EXAMPLE
+
+Hint: create a hash table with (n2) key-value pairs.
+
+
+*** Hashing with wrong hashCode() or equals().
+Suppose that you implement a data type 𝙾𝚕𝚢𝚖𝚙𝚒𝚌𝙰𝚝𝚑𝚕𝚎𝚝𝚎 for use in a 𝚓𝚊𝚟𝚊.𝚞𝚝𝚒𝚕.𝙷𝚊𝚜𝚑𝙼𝚊𝚙.
+
+Describe what happens if you override 𝚑𝚊𝚜𝚑𝙲𝚘𝚍𝚎() but not 𝚎𝚚𝚞𝚊𝚕𝚜().
+Describe what happens if you override 𝚎𝚚𝚞𝚊𝚕𝚜() but not 𝚑𝚊𝚜𝚑𝙲𝚘𝚍𝚎().
+Describe what happens if you override 𝚑𝚊𝚜𝚑𝙲𝚘𝚍𝚎() but implement 𝚙𝚞𝚋𝚕𝚒𝚌 𝚋𝚘𝚘𝚕𝚎𝚊𝚗 𝚎𝚚𝚞𝚊𝚕𝚜(𝙾𝚕𝚢𝚖𝚙𝚒𝚌𝙰𝚝𝚑𝚕𝚎𝚝𝚎 𝚝𝚑𝚊𝚝) instead of 𝚙𝚞𝚋𝚕𝚒𝚌 𝚋𝚘𝚘𝚕𝚎𝚊𝚗 𝚎𝚚𝚞𝚊𝚕𝚜(𝙾𝚋𝚓𝚎𝚌𝚝 𝚝𝚑𝚊𝚝).
+
+
+#+BEGIN_EXAMPLE
+Describe what happens if you override 𝚑𝚊𝚜𝚑𝙲𝚘𝚍𝚎() but not 𝚎𝚚𝚞𝚊𝚕𝚜().
+- objects will be stored/hashed but they won't be equal
+
+Describe what happens if you override 𝚎𝚚𝚞𝚊𝚕𝚜() but not 𝚑𝚊𝚜𝚑𝙲𝚘𝚍𝚎().
+- you'll have equal objects with different hashcodes
+
+Describe what happens if you override 𝚑𝚊𝚜𝚑𝙲𝚘𝚍𝚎() but implement 𝚙𝚞𝚋𝚕𝚒𝚌 𝚋𝚘𝚘𝚕𝚎𝚊𝚗 𝚎𝚚𝚞𝚊𝚕𝚜(𝙾𝚕𝚢𝚖𝚙𝚒𝚌𝙰𝚝𝚑𝚕𝚎𝚝𝚎 𝚝𝚑𝚊𝚝) instead of 𝚙𝚞𝚋𝚕𝚒𝚌 𝚋𝚘𝚘𝚕𝚎𝚊𝚗 𝚎𝚚𝚞𝚊𝚕𝚜(𝙾𝚋𝚓𝚎𝚌𝚝 𝚝𝚑𝚊𝚝).
+
+- 
+#+END_EXAMPLE
+
+Hint: it's code—try it and see!

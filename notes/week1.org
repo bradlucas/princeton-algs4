@@ -1,0 +1,751 @@
+* Week 1
+** Course Introduction
+** 1.5 - Union-Find
+- https://www.google.com/search?client=safari&rls=en&q=ackerum+function&ie=UTF-8&oe=UTF-8#q=Ackermann%27s+function+union-find
+*** Dynamic Connectivity
+- Given N objects
+- Union command
+  - connect two objects
+- Find/connected query
+  - Is there a path connecting the two objects
+
+- Reflexive
+  - p is connected to p
+- Symmetric
+  - if p is connected to q, then q is connected to p
+- Transitive
+  - if p is connected to q and q is connected to r then p is connected to r
+
+- Connected components
+  - Maximal set of objects that are mutually connected
+  - (set of connected objects)
+
+- Commands
+  - find
+    check if two objects are in the same component
+  - unionc
+    replace components containing two objects with their union
+*** Quick Find
+- eqger approach
+
+- integer array id[] of length N
+- p and q are connected iff they have the same id value
+
+- initialize an array 
+- connected/find
+- return True if id[p] == id[q]
+
+- To connect two nodes change all the entires
+- whose id equals id[p] tp id[q]
+
+**** Cost Model
+
+|------------+------------+-------+------|
+| Algorithm  | initialize | union | find |
+| quick-find | N          | N     |    1 |
+|------------+------------+-------+------|
+
+***** defect
+
+- N union commands on N objects takes N^2 array accesses. This is quadratic and too expensive.
+- for each N you need to access N items => N*N
+- Union too expensive (N array accesses)
+- Trees are flat but too expensive to keep them flat
+
+*** Quick Union
+- lazy approach
+
+- integer array id[] of lenght N
+- interpretation: id[i] is parent if i
+- root of i is id[id[id[...[id[i]...]]]
+
+- Find
+- Check if p and q have the same root
+
+- Union
+- To merge components containing p and q, seat the id of p's root to the id of q's root
+- (only change one value)
+
+ 
+**** Cost Model
+- Trees get too tall then the find operation becomes to expensive
+
+|-------------+------------+-------+------|
+| Algorithm   | initialize | union | find |
+| quick-union | N          | N+    |    N |
+|-------------+------------+-------+------|
+
+***** defect
+- N for find is worse case. Tall tree
+- Trees can get tall
+- Find too expensvie (could be N array accesses)
+
+*** Quick Union Improvements
+**** Weighted Quick-Union
+
+- modify quick-union to avoid tall trees
+- avoid putting the large tree under a small tree
+- smaller tree goes under the bigger tree
+- keep track of the number of objects in each tree
+- always link the root of the smaller tree to the root of the larger tree
+
+- Running time
+- Find - proportional to depth of p and q
+- Union - take contant time, given roots
+
+- Proposition
+- Depth of any node x is at most lg N
+- lg - base 2 logarithm
+- The binary logarithm of x is the power to which the number 2 must be raised to obtain the value x. 
+
+
+- 1000 -> 10 because 2 ^ 10 ~ 1000
+- 1000000 -> 20 because 2 ^ 20 ~ 1,000,000
+- 1000000000 -> 30 
+
+- Depth of any node x is lg N
+
+"The key is, when the depth of the tree increases, the size of its
+tree at least doubles, that means that the size of the tree containing
+x can double at most lg N times because if you start with one and
+double it log N times, you get N and there's only N nodes in the
+tree."
+
+***** Cost model
+
+|----------------------+------------+-------+------|
+| Algorithm            | initialize | union | find |
+| weighted quick-union | N          | lg N  | lg N |
+|----------------------+------------+-------+------|
+
+- I thought union would be constant time? No, the union method calls the root/find method
+
+
+**** Path compression
+- Rather than search up to find the root simply store the top root
+
+- Two-pass implementation
+- Add second loop in root() to set the id[] of each examined node to the root
+
+while( i != id[i] ) {
+      j = id[i];
+}
+while( i != id[i] ) {
+    id[i] = j;
+}
+return j;
+
+
+
+
+- Simpler one-pass variant
+- Make every other node in the path point to its grandparent thery halving the path length
+
+
+while( i != id[i] ) {
+    id[i] = id[id[i]]; 
+    i = id[i];
+}
+
+*** Quick Find Applications
+**** Percolation
+
+- n x n grid consisting of sites
+- each site is open with probability p (or blocked with probability 1 - p)
+- systems percolates iff top and bottom are connected by open sites
+- otherwise if there is no path from the top to the bottm then it does not percolate
+  
+- phase transition
+- p > p*: almost certainly percolates
+- p < p*: almost certainly does not percolate
+
+- Monte Carlo simulation
+- initialize all to blocked
+- randomly open sites until it percolates
+- vacancy percentage estimtes p*
+
+
+
+
+- What is the threshold
+- .592746 
+
+
+*** Practice Quiz
+
+**** Social network connectivity. 
+
+Given a social network containing n members and a log file containing
+m timestamps at which times pairs of members formed friendships,
+design an algorithm to determine the earliest time at which all
+members are connected (i.e., every member is a friend of a friend of a
+friend ... of a friend). Assume that the log file is sorted by
+timestamp and that friendship is an equivalence relation. 
+
+The running time of your algorithm should be m log n or better and use
+extra space proportional to n.
+
+- Set of N members
+- Each log file entry becomes a call to union(p, q)
+
+- When will all entries be connected
+- When all entries are not pointing to themselves if original UF
+- Weighted QU is ln N on union and connected
+
+
+- Add another array initialied to N elements with each set to 1 which means parent is itself
+- When you add to the weighted array, sz, set the associated entry in the new array to 0
+- End the unions when there is only one element set to itself in this array
+
+private int[] pz;    // parent is itself
+
+// in constructure
+for (int i = 0; i < N; i++) {
+    pz[i] = 1;
+}
+
+// in union command
+
+when sz[X] += something then
+pz[X] = 0;
+
+// check if only on pz element is 1
+if (1 = Sum(pz)) return Done
+
+
+***** Solution
+
+Thank you for your response. 
+Hint: union−find.
+
+**** Union-find with specific canonical element. 
+
+Add a method 𝚏𝚒𝚗𝚍() to the union-find data type so that 𝚏𝚒𝚗𝚍(𝚒)
+returns the largest element in the connected component containing
+i. The operations, 𝚞𝚗𝚒𝚘𝚗(), 𝚌𝚘𝚗𝚗𝚎𝚌𝚝𝚎𝚍(), and 𝚏𝚒𝚗𝚍() should all take
+logarithmic time or better.
+
+For example, if one of the connected components is {1,2,6,9}, then the
+𝚏𝚒𝚗𝚍() method should return 9 for each of the four elements in the
+connected components.
+
+- While looping save the maximum value
+
+// loop until id[i] == i, node has no parent
+m = -1;
+while (i != id[i]) {
+    if (id[i]) > m) {
+        m = id[i];
+    }
+    i = id[i];
+}
+return m;
+
+Hint: maintain an extra array to the weighted quick-union data
+structure that stores for each root 𝚒 the large element in the
+connected component containing 𝚒.
+
+**** Successor with delete. 
+
+Given a set of N integers S={0,1,...,n−1} and a sequence of requests
+of the following form:
+
+- Remove x from S 
+- Find the successor of x: the smallest y in S such that y >= x.  
+
+Design a data type so that all operations (except construction)
+take logarithmic time or better in the worst case.
+
+int[] id;     // [0 1 2 3 4 5 ...]
+
+constructor(N) {
+    for (int i = 0; i < N; i++ ) {
+       id[i] = 1;
+
+void remove(x) {
+   id[x] = 0;
+}
+
+int successor(x) {
+    // rerturn y where y >= x
+    return id[x];
+}
+
+Hint: use the modification of the union−find data discussed in the
+previous question.
+
+*** Programming Assignment - Percolation
+- https://www.coursera.org/learn/algorithms-part1/programming/Lhp5z/percolation
+- http://coursera.cs.princeton.edu/algs4/assignments/percolation.html
+- http://coursera.cs.princeton.edu/algs4/checklists/percolation.html
+
+
+**** Installation
+Last login: Sat Feb 11 11:29:29 on ttys001
+You have mail.
+echo
+bash
+clear;echo -e "Launching algs4.app...
+
+Please type your OS X user password to begin the installation.
+Note: You won't see the characters as you type them.
+";sudo bash '/Users/brad/Downloads/algs4.app/Contents/Resources/launcher.sh' ${USER};exit &> /dev/null
+Loading .bash_profile
+HOME: /Users/brad
+PATH: /usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+Loading /Users/brad/.bashrc
+Loading self/bashrc
+Entering .bashrc
+Leaving bashrc JAVA_HOME=
+Leaving .bashrc
+Exiting .bashrc
+Loading actionx/bashrc
+Loading git-tools
+blucas.home:~$ echo
+
+blucas.home:~$ bash
+Loading /Users/brad/.bashrc
+Loading self/bashrc
+Entering .bashrc
+Leaving bashrc JAVA_HOME=
+Leaving .bashrc
+Exiting .bashrc
+Loading actionx/bashrc
+Loading git-tools
+blucas.home:~$ clear;echo -e "Launching algs4.app...
+> 
+> Please type your OS X user password to begin the installation.
+> Note: You won't see the characters as you type them.
+> ";sudo bash '/Users/brad/Downloads/algs4.app/Contents/Resources/launcher.sh' ${USER};exit &> /dev/null
+
+Launching algs4.app...
+
+Please type your OS X user password to begin the installation.
+Note: You won't see the characters as you type them.
+
+Password:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+####################################################################
+#                                                                  #
+#            d8888 888      .d8888b.   .d8888b.        d8888       #
+#           d88888 888     d88P  Y88b d88P  Y88b      d8P888       #
+#          d88P888 888     888    888 Y88b.          d8P 888       #
+#         d88P 888 888     888         "Y888b.      d8P  888       #
+#        d88P  888 888     888  88888     "Y88b.   d88   888       #
+#       d88P   888 888     888    888       "888   8888888888      #
+#      d8888888888 888     Y88b  d88P Y88b  d88P         888       #
+#     d88P     888 88888888 "Y8888P88  "Y8888P"          888       #
+#                                                                  #
+####################################################################
+#                                                                  #
+# Java Programming Environment Setup                               #
+# for Mac OS X - v4.0                                              #
+# Written by Hayk Martirosyan and Kevin Wayne                      #
+# Princeton University                                             #
+#                                                                  #
+####################################################################
+
+Initializing functions and beginning installation...
+
+Creating installation directory at
+/usr/local/algs4
+
+#### Step 1 - Java #################################################
+
+% javac -version
+javac 1.8.0_65
+
+% java -version
+java version "1.8.0_65"
+Java(TM) SE Runtime Environment (build 1.8.0_65-b17)
+Java HotSpot(TM) 64-Bit Server VM (build 25.65-b01, mixed mode)
+
+Java 8 appears to be properly installed.
+
+Downloading java execution script from
+http://algs4.cs.princeton.edu/mac/java-algs4
+to
+/usr/local/bin/java-algs4
+
+Granting executable permission to
+/usr/local/bin/java-algs4
+
+Downloading javac execution script from
+http://algs4.cs.princeton.edu/mac/javac-algs4
+to
+/usr/local/bin/javac-algs4
+
+Granting executable permission to
+/usr/local/bin/javac-algs4
+
+Downloading java-cos226 execution script from
+http://algs4.cs.princeton.edu/mac/java-cos226
+to
+/usr/local/bin/java-cos226
+
+Granting executable permission to
+/usr/local/bin/java-cos226
+
+Downloading javac-cos226 execution script from
+http://algs4.cs.princeton.edu/mac/javac-cos226
+to
+/usr/local/bin/javac-cos226
+
+Granting executable permission to
+/usr/local/bin/javac-cos226
+
+#### Step 2 - Textbook Libraries ##################################
+
+Downloading algs4.jar from
+http://algs4.cs.princeton.edu/code/algs4.jar
+to
+/usr/local/algs4/algs4.jar
+
+#### Step 3 - Checkstyle ##########################################
+
+Downloading checkstyle from
+http://algs4.cs.princeton.edu/mac/checkstyle.zip
+to
+/usr/local/algs4/checkstyle.zip
+
+Extracting zip archive in place at
+/usr/local/algs4/checkstyle.zip
+and deleting .zip file.
+
+Downloading checkstyle-algs4.xml configuration file from
+http://algs4.cs.princeton.edu/mac/checkstyle-algs4.xml
+to
+/usr/local/algs4/checkstyle-algs4.xml
+
+Downloading checkstyle-cos226.xml configuration file from
+http://algs4.cs.princeton.edu/mac/checkstyle-cos226.xml
+to
+/usr/local/algs4/checkstyle-cos226.xml
+
+Downloading checkstyle-suppressions.xml file from
+http://algs4.cs.princeton.edu/mac/checkstyle-suppressions.xml
+to
+/usr/local/algs4/checkstyle-suppressions.xml
+
+Downloading checkstyle-algs4 execution script from
+http://algs4.cs.princeton.edu/mac/checkstyle-algs4
+to
+/usr/local/bin/checkstyle-algs4
+
+Granting executable permission to
+/usr/local/bin/checkstyle-algs4
+
+Downloading checkstyle-cos226 execution script from
+http://algs4.cs.princeton.edu/mac/checkstyle-cos226
+to
+/usr/local/bin/checkstyle-cos226
+
+Granting executable permission to
+/usr/local/bin/checkstyle-cos226
+
+#### Step 4 - Findbugs ############################################
+
+Downloading findbugs from
+http://algs4.cs.princeton.edu/mac/findbugs.zip
+to
+/usr/local/algs4/findbugs.zip
+
+Extracting zip archive in place at
+/usr/local/algs4/findbugs.zip
+and deleting .zip file.
+
+Downloading findbugs.xml configuration file from
+http://algs4.cs.princeton.edu/mac/findbugs.xml
+to
+/usr/local/algs4/findbugs.xml
+
+Downloading findbugs-algs4 execution script from
+http://algs4.cs.princeton.edu/mac/findbugs-algs4
+to
+/usr/local/bin/findbugs-algs4
+
+Granting executable permission to
+/usr/local/bin/findbugs-algs4
+
+Downloading findbugs-cos226 execution script from
+http://algs4.cs.princeton.edu/mac/findbugs-cos226
+to
+/usr/local/bin/findbugs-cos226
+
+Granting executable permission to
+/usr/local/bin/findbugs-cos226
+
+#### Step 5 - DrJava ##############################################
+
+Downloading DrJava from
+http://algs4.cs.princeton.edu/mac/DrJava.zip
+to
+/Applications/DrJava.zip
+
+Extracting zip archive in place at
+/Applications/DrJava.zip
+to create
+/Applications/DrJava.app
+
+Downloading DrJava configuration file from
+http://algs4.cs.princeton.edu/mac/.drjava
+to
+/Users/brad/.drjava
+
+Creating a shortcut to DrJava on the desktop...
+
+#### Step 6 - Terminal #############################################
+
+Creating a shortcut to Terminal on the desktop...
+
+#### Step 7 - Test it out! #########################################
+
+Downloading the test Java program...
+
+Installation complete! Compiling test program...
+Test program compiled. Running...
+
+If you saw the bullseye and textbook graphic, the installation
+was successful and you are ready to start programming in Java.
+Continue with the introductory tutorial on the booksite.
+
+NOTE: If there were any error messages during this setup, check the
+troubleshooting section on the website or ask for help.
+
+A log file of this installation is saved at
+/usr/local/algs4/log.txt
+
+You should now close this window.
+blucas.home:~$ 
+
+** Analysis of Algorithms
+*** Introduction
+**** FFT algorithm
+N log N steps
+
+**** N-body simulation
+Andrew Appel, PU 81
+Barnes-Hut algorithm: N log N
+
+**** Quiz
+n = 1,000,000
+how much faster is n lg n versus n^2
+
+n^2 = 1000000000000
+      1,000,000,000,000
+n lg n = 1,000,000 * 20 = 20,000,000
+
+*** Observations
+**** 3-Sum problem
+Given N distinct integers, how many triples sum to exactly zero?
+*** Mathematical Models
+
+i = 0 to n
+j = i+1 to n
+k = 1 to n where k = k*2
+3 array accesses
+
+*** Order-of-Growth Classifications
+
+1
+log N
+N
+N log N
+N ^ 2
+N ^ 3
+2 ^ N
+
+
+- logarithmic or constant are good
+- linear or n log n, scale with input size, reasonable
+
+- bad...
+- quadratic   (double loops)
+- cubic       (triple loops)
+- exponential
+
+
+- loop where input divides in half, logarithmic
+- 
+
+
+**** Java Arrays.binarySearch()
+
+*** Theory of Algorithms
+*** Memory
+- Megabyte 1 million or 2^20
+- Gigabyte 1 billion or 2^30
+
+- Computer scientists use the 2^20 and 2^30
+
+Modern machine
+64 bit mahcine
+8 byte pointers
+2^64 is a huge number
+
+|---------+-------+---------+----|
+|         | bytes |         |    |
+| boolean |     1 |         |    |
+| byte    |     1 |         |    |
+| char    |     2 |         |    |
+| int     |     4 | 32 bits | << |
+| float   |     4 |         |    |
+| long    |     8 |         |    |
+| double  |     8 | 64 bits | << |
+|---------+-------+---------+----|
+
+
+|-----------------+---------------------+---|
+| char[]          | 2N + 24             |   |
+| int[]           | 4N + 24             |   |
+| double[]        | 8N + 24             |   |
+|                 |                     |   |
+|-----------------+---------------------+---|
+|                 |                     |   |
+| char[][]        | ~ 2 M N             |   |
+| int[][]         | ~ 4 M N             |   |
+| double[][]      | ~ 8 M N             |   |
+|-----------------+---------------------+---|
+
+|-----------------+---------------------+---|
+|                 |               bytes |   |
+| Object overhead |                  16 |   |
+| Reference       |                   8 |   |
+| Padding         | Multiple of 8 bytes |   |
+|-----------------+---------------------+---|
+
+  A Date objecdt use 32 bytes
+
+String of N length uses ~2N
+
+Exampe
+16 byte overhead 
+8 byte reference 
+2N + 24 butes for char[] array
+4 bytes int
+4 bytes int
+4 bytes int
+4 bytes (padding)
+-----------------
+
+2N + 64 bytes
+
+*** Inverview Questions
+
+**** 3-SUM in quadratic time. 
+Design an algorithm for the 3-SUM problem that takes time proportional to n2 in the worst case. 
+You may assume that you can sort the n integers in time proportional to n2 or better.
+
+**** Search in a bitonic array. 
+
+An array is bitonic if it is comprised of an increasing sequence of integers followed immediately by a decreasing sequence of integers. 
+Write a program that, given a bitonic array of n distinct integer values, determines whether a given integer is in the array.
+
+Standard version: Use ∼3lgn compares in the worst case.
+Signing bonus: Use ∼2lgn compares in the worst case (and prove that no algorithm can guarantee to perform fewer than ∼2lgn compares in the worst case).
+
+**** Egg drop. 
+
+Suppose that you have an n-story building (with floors 1 through n) and plenty of eggs. 
+An egg breaks if it is dropped from floor T or higher and does not break otherwise. 
+Your goal is to devise a strategy to determine the value of T given the following limitations on the number of eggs and tosses:
+
+Version 0: 1 egg, ≤T tosses.
+Version 1: ∼1lgn eggs and ∼1lgn tosses.
+Version 2: ∼lgT eggs and ∼2lgT tosses.
+Version 3: 2 eggs and ∼2n‾‾√ tosses.
+Version 4: 2 eggs and ≤cT‾‾√ tosses for some fixed constant 
+
+
+***** Interview Questions (optional)
+3/3 points earned (100%)
+
+Excellent!
+Retake
+Next
+Correct
+1 / 1 points
+1. 
+3-SUM in quadratic time. Design an algorithm for the 3-SUM problem that takes time proportional to n2 in the worst case. You may assume that you can sort the n integers in time proportional to n2 or better.
+
+Note: these interview questions are ungraded and purely for your own enrichment. To get a hint, submit a solution.
+
+#+BEGIN_EXAMPLE
+ - sort numbers
+- for a - 0 to N:
+    search rest of list for b and c such that a + b + c = 0
+#+END_EXAMPLE
+
+Thank you for your response. 
+Hint: given an integer 𝚡 and a sorted array 𝚊[] of n distinct integers, design a linear-time algorithm to determine if there exists two distinct indices 𝚒 and 𝚓 such that 𝚊[𝚒]+𝚊[𝚓]==𝚡.
+Correct
+1 / 1 points
+2. 
+Search in a bitonic array. An array is bitonic if it is comprised of an increasing sequence of integers followed immediately by a decreasing sequence of integers. Write a program that, given a bitonic array of n distinct integer values, determines whether a given integer is in the array.
+
+Standard version: Use ∼3lgn compares in the worst case.
+Signing bonus: Use ∼2lgn compares in the worst case (and prove that no algorithm can guarantee to perform fewer than ∼2lgn compares in the worst case).
+
+#+BEGIN_EXAMPLE
+- find middle
+- binary_search to the left
+- binary_search to the right
+#+END_EXAMPLE
+
+Thank you for your response. 
+Hints: Standard version. First, find the maximum integer using ∼1lgn compares—this divides the array into the increasing and decreasing pieces.
+
+Signing bonus. Do it without finding the maximum integer.
+Correct
+1 / 1 points
+3. 
+Egg drop. Suppose that you have an n-story building (with floors 1 through n) and plenty of eggs. An egg breaks if it is dropped from floor T or higher and does not break otherwise. Your goal is to devise a strategy to determine the value of T given the following limitations on the number of eggs and tosses:
+
+Version 0: 1 egg, ≤T tosses.
+Version 1: ∼1lgn eggs and ∼1lgn tosses.
+Version 2: ∼lgT eggs and ∼2lgT tosses.
+Version 3: 2 eggs and ∼2n‾‾√ tosses.
+Version 4: 2 eggs and ≤cT‾‾√ tosses for some fixed constant c.
+
+#+BEGIN_EXAMPLE
+for i = 1 to N:
+    if egg_breaks:
+        return i
+#+END_EXAMPLE
+
+Thank you for your response. 
+Hints:
+
+Version 0: sequential search.
+Version 1: binary search.
+Version 2: find an interval containing T of size ≤2T, then do binary search.
+Version 3: find an interval of size n‾‾√, then do sequential search. Note: can be improved to ∼2n‾‾‾√ tosses.
+Version 4: 1+2+3+…+t∼12t2. Aim for c=22‾‾√.
+
+** Programming Assignment 1 - Percolation
+- Assignment
+- http://coursera.cs.princeton.edu/algs4/assignments/percolation.html
+
+- Example
+- https://github.com/vgoodvin/princeton-algs4
+- https://github.com/kevin-wayne/algs4/blob/master/src/main/java/edu/princeton/cs/algs4/WeightedQuickUnionUF.java
+
+- Checklist
+- http://coursera.cs.princeton.edu/algs4/checklists/percolation.html

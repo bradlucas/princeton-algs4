@@ -1,0 +1,368 @@
+* Week 2
+** Stacks and Queues
+*** Overview
+You may be familiar with several of the algorithms and data structures that we consider this week, but perhaps not with our approach to data abstraction and Java language mechanisms for implementing them, so it's worthwhile to pay close attention. In the week's first lecture, we consider robust implementations for stacks and queues. In the week's second lecture, we begin our study of sorting algorithms. In both cases, we consider applications that illustrate the efficacy of careful modular programming when implementing algorithms.
+
+Lecture: Stacks and Queues. We consider two fundamental data types for storing collections of objects: the stack and the queue. We implement each using either a singly-linked list or a resizing array. We introduce two advanced Java features—generics and iterators—that simplify client code. Finally, we consider various applications of stacks and queues ranging from parsing arithmetic expressions to simulating queueing systems.
+
+Lecture: Elementary Sorts. We introduce the sorting problem and Java's Comparable interface. We study two elementary sorting methods (selection sort andinsertion sort) and a variation of one of them (shellsort). We also consider two algorithms for uniformly shuffling an array. We conclude with an application of sorting to computing the convex hull via the Graham scan algorithm.
+
+Exercises. (Sorry, we are still waiting for Coursera to migrate the exercises from the old platform.) Drill exercises on the lecture material.
+
+Programming Assignment: Deques and Randomized Queues. Your programming assignment will involve developing implementations of two conceptually simple "collection" data types—the deque and the randomized queue---which are quite useful in practice. Properly implementing these data types will require using a linked data structure for one and a resizing array for the other.
+
+Job Interview Questions. Algorithmic interview questions based on the lecture material.
+
+Suggested readings. Section 1.3 and 2.1 in Algorithms, 4th edition.
+*** Slides - 
+1.3 BAGS, QUEUES, AND STACKS
+*** Stacks
+- push, pop
+- lifo
+- last in, first out
+
+*** Resizing Arrays
+- idea
+- if array is full, create a new array of twice the size and copy the items
+
+- worst case performance is N
+- when double N is the factor for the copy
+
+- LinkedList
+- Every operation takes constant time in the worse case
+- Uses extra time and space to deal with the links
+
+- Resizing Array
+- Every operation takes constant amortized time
+- Less wasted space
+
+
+Suppose that, starting from an empty data structure, we perform n push operations in our resizing-array implementation of a stack.
+How many times is the resize() method called?
+
+- resize is called when the size of the stack is a power of 2
+- how many powers of 2 are there between 1 and n
+
+- Answer: logarithmic
+- There are ~ log2 n powers of 2 between 1 and n
+
+*** Queues
+
+- enqueue
+  - add an item at the end of a queue
+- dequeue
+  - remoe an item at the beginning
+
+*** Generics
+- What about Stacks and Queues of things other than Strings
+
+- LinkedList
+- <Item>
+- Works well for objects
+
+- Array
+- Java does not support generic array creation
+- You need to use cast (ugly)
+- "the ugly cast"
+- a = (Item[]) new Object[capacity];
+
+- What about primitive types?
+- autoboxing
+- Each primitive has a wrapper object type
+- Stack<Integer>
+
+*** Iterators
+- Iterable interface
+
+- hasNext()
+- next()
+
+*** Quiz
+
+**** Queue with two stacks
+- http://stackoverflow.com/questions/69192/how-to-implement-a-queue-using-two-stacks
+
+Interview Questions (optional)
+3/3 points earned (100%)
+
+Excellent!
+Retake
+Next
+Correct
+1 / 1 points
+1. 
+Queue with two stacks. Implement a queue with two stacks so that each queue operations takes a constant amortized number of stack operations.
+
+Note: these interview questions are ungraded and purely for your own enrichment. To get a hint, submit a solution.
+
+#+BEGIN_EXAMPLE
+inputStack = new Stack<Item>();
+outputStack = new Stack<item>();
+
+public void enqueue(item) {
+    inputStack.push();
+}
+
+public Item dequeue() {
+#+END_EXAMPLE
+Thank you for your response. 
+Hint: If you push elements onto a stack and then pop them all, they appear in reverse order. If you repeat this process, they're now back in order.
+Correct
+1 / 1 points
+2. 
+Stack with max. Create a data structure that efficiently supports the stack operations (push and pop) and also a return-the-maximum operation. Assume the elements are reals numbers so that you can compare them.
+
+#+BEGIN_EXAMPLE
+- two stacks. the second is to store the maximum
+
+- push
+  - push to first stack
+  - pop from second stack
+      - compare item with popped item. push max to second stack
+
+#+END_EXAMPLE
+Thank you for your response. 
+Hint: Use two stacks, one to store all of the items and a second stack to store the maximums.
+Correct
+1 / 1 points
+3. 
+Java generics. Explain why Java prohibits generic array creation.
+
+#+BEGIN_EXAMPLE
+Java arrays need to know their component type when they are created and can not wait till runtime to know their component types.
+#+END_EXAMPLE
+Thank you for your response. 
+Hint: to start, you need to understand that Java arrays are covariant but Java generics are not: that is, 𝚂𝚝𝚛𝚒𝚗𝚐[] is a subtype of 𝙾𝚋𝚓𝚎𝚌𝚝[], but 𝚂𝚝𝚊𝚌𝚔<𝚂𝚝𝚛𝚒𝚗𝚐> is not a subtype of 𝚂𝚝𝚊𝚌𝚔<𝙾𝚋𝚓𝚎𝚌𝚝>.
+
+** Elementary Sort
+*** Sorting Intro
+
+- Comparable
+*** Selection Sort
+- Find smallest and swap with the first
+- Repeat for next entry
+- Each time you need to scan all the remaining items
+- When you find the next min you only need to swap two items
+
+- Algorithm
+- Scans from left to right
+
+- Invariants
+- Entries to the left of the current point are fixed and in ascending order
+- No entry to the right is smaller than any entry to the left
+
+
+- The code implements the invariants
+- Move pointer to the right
+- Identify index of minimum entry on the right
+- Exchange into position
+
+
+- (n -1 ) + (n - 2) _ ... + 1 + 0 ~ n^2/2
+- quadratic time for compares
+
+- linear time of exchanges
+
+
+- N ^ 2 / 2 compares and exactly N exchanges
+
+** Insertion Sort
+In iteration i, swap a[i] with each larger entry to its left
+
+- work left exchanging till card is smaller than the right
+- don't always have to go back to the beginning
+
+
+- Algorithm : scans from left to right
+
+- Invariants
+- Entries to the left are in ascending order
+- Entries to the right have not been seen yet 
+
+- Code implements the invariants
+- Move the pointer to the right
+- moving from right to left, exchange a[i] with each larger entry to its left
+
+
+- 1/4 n^2 compares and 1/4 n^2 exchanges on average
+
+- About twice as fast as seletion sort
+
+- Best case. Already sorted array
+- N-1 compares with 0 exchanges
+
+- Worse case. Descending sorted
+- 1/2 n^2 compares and 1/2 n^2 exchanges
+- For every item it has to exhange it already back to the beginning
+
+
+
+- Runs in linear time for partially sorted arrays
+- Number of exchanges equals the number of inversions
+** Shell Sort
+- move entries more than one position at a time by H-sorting the array
+
+- 4 sorted array
+- [Shell 1959]
+input -> 13-sort -> 4-sort -> 1-sort
+
+- use insertion sort with a stride length of h
+
+- Why insertion sort?
+- Basically makes the array partially sorted which benefits insertion sort
+- Big increments => small subarray
+- Small increments => nearly in order
+
+
+- Proposition: A g-sorted array remains g-sorted after k-sorting it
+
+- What increment sequence to use?
+
+- Power's of two doesn't work
+- Ignores even till the 1-sort
+
+- Powers of two minus one
+- Maybe (Shell's idea)
+
+- 3x + 1 (Knuth)
+- Ok, easy to compute
+- 1, 4, 13, 40, 121, 364, ...
+
+- Sedgewick
+- 1, 5, 19, 41, 109, 209, 505, 929, 2161, 3905, ..
+- Good
+
+
+- Analysis
+- Worst-case number of compares with 3x+1 is O(N ^ (3/2))
+- In practice it is much less
+- An accurate model has not been discovered
+
+- A simple idea that leads to substantial performance gains
+- Doesn't use mich code
+- Popular in hardward
+
+
+- Some good algorithms are still waiting discovery
+
+** Shuffling 
+- Assign random number as key to each element
+- Sort on this key
+- Is randome but requires a sort
+
+- Knuth shuffle
+- Fisher-Yates 1938
+- Linear time
+- In iteration i, pick integer r between 0 and i uniformly aat random
+- Swap a[i] and a[r]
+
+- Uniform random number -> StdRandom.uniform(i+1);   between 0 and i
+
+
+- Shuffling cards
+- 52!
+- http://czep.net/weblog/52cards.html
+** Convex Hull
+- Computational Geometery
+- A convex hull is the smallest perimeter fence enclosing all points
+
+- output: sequence of vertices in couterclockwise order
+
+
+- Grahm scan
+- Choose the point with the lowest y-coordinate
+- Sort points by polar angle
+- Dscard unless it creates a counter clockwise turn
+** Quiz
+*** Intersection of two sets. 
+- https://github.com/guibin/Knowledge/tree/master/libs/lib.algorithm/src/main/java/guibin/zhang/onlinecourse
+Given two arrays 𝚊[] and 𝚋[], each containing n distinct 2D points in the plane, 
+design a subquadratic algorithm to count the number of points that are contained 
+both in array 𝚊[] and array 𝚋[]
+
+- sort both arrays
+
+- for ( int i = 0, j = 0; i < a.length && j < b.length; ) {
+  if (a[i] == b[j]) {
+     result.add(a[i];
+     i += 1;
+     j += 1;
+  } else if (a[i].compareTo(b[j]) < 0) {
+     i += 1;
+  } else {
+     j += 1;
+  }
+
+*** Dutch Flag
+- https://en.wikipedia.org/wiki/Dutch_national_flag_problem
+- https://github.com/frncsrss/interviews/blob/master/src/core/interviews/arrays/DutchNationalFlag.java
+
+
+*** Results : Interview Questions (optional)
+3/3 points earned (100%)
+
+1. Intersection of two sets. Given two arrays 𝚊[] and 𝚋[], each containing n distinct 2D points in the plane, design a subquadratic algorithm to count the number of points that are contained both in array 𝚊[] and array 𝚋[].
+
+Note: these interview questions are ungraded and purely for your own enrichment. To get a hint, submit a solution.
+
+#+BEGIN_EXAMPLE
+- sort both arrays
+
+- for ( int i = 0, j = 0; i < a.length && j < b.length; ) {
+  if (a[i] == b[j]) {
+     result.add(a[i];
+     i += 1;
+     j += 1;
+#+END_EXAMPLE
+
+Thank you for your response. 
+Hint: shellsort (or any other subquadratic sort).
+
+
+2. Permutation. Given two integer arrays of size n, design a subquadratic algorithm to determine whether one is a permutation of the other. That is, do they contain exactly the same entries but, possibly, in a different order.
+
+#+BEGIN_EXAMPLE
+- sort both arrays
+- loop and compare, if they are the same they they are permutations of each other
+#+END_EXAMPLE
+
+Thank you for your response. 
+Hint: sort both arrays.
+ 
+3.Dutch national flag. Given an array of n buckets, each containing a red, white, or blue pebble, sort them by color. The allowed operations are:
+
+swap(i,j): swap the pebble in bucket i with the pebble in bucket j.
+color(i): color of pebble in bucket i.
+The performance requirements are as follows:
+
+At most n calls to color().
+At most n calls to swap().
+Constant extra space.
+
+#+BEGIN_EXAMPLE
+- find the first red. this will be the bottom of the top color
+- find the last blue. this will be the top of the bottom color
+
+loop starting at red and till blue
+    if red swap into top group
+    if blue swap into bottom group
+    else leave white in the middle
+#+END_EXAMPLE
+
+Thank you for your response. 
+
+** Programming Assignment: Deques and Randomized Queues
+- https://www.coursera.org/learn/algorithms-part1/programming/zamjZ/deques-and-randomized-queues/submission
+- https://www.coursera.org/learn/algorithms-part1/programming/zamjZ/deques-and-randomized-queues
+- http://coursera.cs.princeton.edu/algs4/assignments/queues.html
+- http://coursera.cs.princeton.edu/algs4/checklists/queues.html
+
+- Examples
+- https://github.com/mscndle/Coursera-Algorithms-1-Princeton/blob/master/Assgn2-RandomizedQueues/src/Deque.java
+- https://datarecipe.wordpress.com/2015/06/27/java-practice-randomized-queues-and-deques/
+
+- https://github.com/lucamolteni/randomized-queues-deques/blob/master/src/RandomizedQueue.java#L74
+- https://datarecipe.wordpress.com/2015/06/27/java-practice-randomized-queues-and-deques/
+- https://github.com/ericzhang-cn/princeton-algs4/tree/master/src/main/java
+- https://github.com/ISchwarz23/Algorithms-Part1---Assignments
+

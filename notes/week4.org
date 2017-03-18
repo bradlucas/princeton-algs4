@@ -1,0 +1,184 @@
+* Week 4
+** Intro
+This week we are going to introduce two fundamental data types,
+address the challenges of developing algorithms and data structures
+that can serve as the basis of efficient implementations, and try to
+convince you that such implementations enable solution of a broad
+range of applications problems that could not be solved without them.
+
+Lecture: Priority Queues. We introduce the priority queue data type
+and an efficient implementation using the binary heap data
+structure. This implementation also leads to an efficient sorting
+algorithm known as heapsort. We conclude with an applications of
+priority queues where we simulate the motion of N particles subject to
+the laws of elastic collision.
+
+Lecture: Elementary Symbol Tables. We define an API for symbol tables
+(also known as associative arrays) and describe two elementary
+implementations using a sorted array (binary search) and an unordered
+list (sequential search). When the keys are Comparable, we define an
+extended API that includes the additional methods min, max floor,
+ceiling, rank, and select. To develop an efficient implementation of
+this API, we study the binary search tree data structure and analyze
+its performance.
+
+Exercise. (Sorry, we are still waiting for Coursera to migrate the
+exercises from the old platform.) Drill exercises on the lecture
+material.
+
+Programming Assignment: 8-Puzzle. Your programming assignment is to
+implement the famous A* search algorithm to solve a combinatorial
+problem, and to substantially speed it up with an efficient priority
+queue implementation.
+
+Job Interview Questions. Algorithmic interview questions based on the
+lecture material.
+
+Suggested readings. Section 2.4, 3.1, and 3.2 in Algorithms, 4th
+edition.
+** Priority Queues
+
+What is the expected number of array accesses and compares, repectively, to insert
+a random key into an ordered-array implementaiton of a priority queue
+
+- linear and logarithmic
+we can use binary search to find the insertion point using a logarithmic number of compareds.
+Pn average, the key to be inserted must be placed in the midde of the array
+to keey the array in order we must shift over all larger keys
+
+** Binary Heaps
+
+Height os N nodes is [ln N]
+Height increases when N is a power of two
+
+** Heapsort
+
+Build max heap using bottom-up method
+
+Video: 12:00
+Heap construction uses <= 2 N compares and exchanges
+Heapsort uses <= 2 N lg N compares and exchanges
+
+In place sorting algorithm with N log N worst-case
+
+Mergesort : no, linear extra space
+Quicksot : no, quadratice time in worst case
+Heapsort: yes
+
+Bottom line:
+Heapsort is optimal for both tim and space, but:
+Inner loop longer than quicksoft
+Makes poor use of cache memory
+Not stable
+
+*** How many compares does bottom-up (sink-based) heap construction perform in the worst case when sorting an array of n keys?
+
+- Linear
+As sate in the lecture, the bottom-up version of heapsort makes ~ 2N compares in the worst case. For a proof of this fact, see Exercise 2.4.20
+
+** Event-Drivn Simulation (optional)
+Bouncing balls demonstration
+
+How many priority-queue operations are performed for each collision in the worst case
+
+linear
+In the worst case, each of the two colliding particles might be predicated to collide with each of the other particles (and two walls). 
+In practice the numbrer of priority queue operations will be much much smaller.
+
+** Interview questions
+- http://stackoverflow.com/questions/15319561/how-to-implement-a-median-heap
+- https://en.wikipedia.org/wiki/Taxicab_number
+
+1.  Dynamic median. Design a data type that supports insert in logarithmic time, find-the-median in constant time, and remove-the-median in logarithmic time.
+
+#+BEGIN_EXAMPLE
+- use two priority queues
+- max heap
+- min heap
+#+END_EXAMPLE
+
+Hint: maintain two binary heaps, one that is max-oriented and one that is min-oriented.
+
+2. Randomized priority queue. Describe how to add the methods 𝚜𝚊𝚖𝚙𝚕𝚎() and 𝚍𝚎𝚕𝚁𝚊𝚗𝚍𝚘𝚖() to our binary heap implementation. The two methods return a key that is chosen uniformly at random among the remaining keys, with the latter method also removing that key. The 𝚜𝚊𝚖𝚙𝚕𝚎() method should take constant time; the 𝚍𝚎𝚕𝚁𝚊𝚗𝚍𝚘𝚖() method should take logarithmic time. Do not worry about resizing the underlying array.
+
+#+BEGIN_EXAMPLE
+- random from keys
+#+END_EXAMPLE
+
+3. Taxicab numbers. A taxicab number is an integer that can be expressed as the sum of two cubes of integers in two different ways: a3+b3=c3+d3. For example, 1729=93+103=13+123. Design an algorithm to find all taxicab numbers with a, b, c, and d less than n.
+
+Version 1: Use time proportional to n2logn and space proportional to n2.
+Version 2: Use time proportional to n2logn and space proportional to n.
+
+#+BEGIN_EXAMPLE
+
+- min priority queue
+
+#+END_EXAMPLE
+Version 1: Form the sums a3+b3 and sort.
+Version 2: Use a min-oriented priority queue with n items.
+
+** Symbol Tables
+
+*** Associative array abstraction
+
+** Elementary Implementations
+
+** Binary Search Trees
+A BST is a binary tree in a symmetric order
+
+The tree shape depends on the order of insertion
+
+Worst case if they come in order. Then no better than a linked list
+
+Tree grows from the bottom
+
+if N distinct keys inseart ed in BST
+expected number of compares for serch/insert is ~ 2 ln N
+
+How Tall is a Tree? Bruce Reed
+Height is ~ 4.311 ln N
+
+Worse-case height is N
+
+** Ordered Operations in BSTs
+** Practice Exercises
+*** 1. Java autoboxing and equals(). Consider two 𝚍𝚘𝚞𝚋𝚕𝚎 values 𝚊 and 𝚋 and their corresponding <tt>Double</tt> values 𝚡 and 𝚢.
+
+Find values such that (𝚊==𝚋) is 𝚝𝚛𝚞𝚎 but 𝚡.𝚎𝚚𝚞𝚊𝚕𝚜(𝚢) is 𝚏𝚊𝚕𝚜𝚎.
+Find values such that (𝚊==𝚋) is 𝚏𝚊𝚕𝚜𝚎 but 𝚡.𝚎𝚚𝚞𝚊𝚕𝚜(𝚢) is 𝚝𝚛𝚞𝚎.
+
+- Java references can be different yet contain the same value
+
+Hint: IEEE floating point arithmetic has some peculiar rules for 𝟶.𝟶, −𝟶.𝟶, and 𝙽𝚊𝙽. Java requires that 𝚎𝚚𝚞𝚊𝚕𝚜() implements an equivalence relation.
+
+*** 2. Check if a binary tree is a BST. Given a binary tree where each 𝙽𝚘𝚍𝚎 contains a key, determine whether it is a binary search tree. Use extra space proportional to the height of the tree.
+
+- sort
+
+Hint: design a recursive function 𝚒𝚜𝙱𝚂𝚃(𝙽𝚘𝚍𝚎𝚡,𝙺𝚎𝚢𝚖𝚒𝚗,𝙺𝚎𝚢𝚖𝚊𝚡) that determines whether 𝚡 is the root of a binary search tree with all keys between 𝚖𝚒𝚗 and 𝚖𝚊𝚡.
+
+*** 3. Inorder traversal with constant extra space. Design an algorithm to perform an inorder traversal of a binary search tree using only a constant amount of extra space.
+
+- binary search
+
+
+Hint: you may modify the BST during the traversal provided you restore it upon completion.
+
+*** 4. Web tracking. Suppose that you are tracking n web sites and m users and you want to support the following API:
+
+User visits a website.
+How many times has a given user visited a given site?
+What data structure or data structures would you use?
+
+- map with keys which are the n web sites an values which are maps with m users as keys. The values for the  user maps are the counts of visits
+
+Hint: maintain a symbol table of symbol tables.
+
+** Programming Assignment : 8 Puzzle
+- http://coursera.cs.princeton.edu/algs4/assignments/8puzzle.html
+- https://en.wikipedia.org/wiki/A*_search_algorithm
+
+- https://github.com/keyvanakbary/princeton-algorithms/blob/master/week-4-8-puzzle/Board.java
+- https://github.com/ISchwarz23/Algorithms-Part1---Assignments/blob/master/Week%204%20-%208%20Puzzle/src/Board.java
+- https://github.com/merwan/algs4/blob/master/8-puzzle/src/Solver.java

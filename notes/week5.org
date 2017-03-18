@@ -1,0 +1,109 @@
+* Week 5
+** Overview
+
+Can we guarantee fast search, insert, delete, min, max, floor,
+ceiling, rank, and select in a symbol table with Comparable keys? This
+week, you will learn that the answer to this question is a resounding
+Yes! and that a relatively compact implementation discovered just five
+years ago can do the job. Then, we consider applications and
+generalizations of binary search trees to problems in computational
+geometry.
+
+Lecture: Balanced Search Trees. In this lecture, our goal is to
+develop a symbol table with guaranteed logarithmic performance for
+search and insert (and many other operations). We begin with 2-3
+trees, which are easy to analyze but hard to implement. Next, we
+consider red-black binary search trees, which we view as a novel way
+to implement 2-3 trees as binary search trees. Finally, we introduce
+B-trees, a generalization of 2-3 trees that are widely used to
+implement file systems.
+
+Lecture: Geometric Applications of BSTs. We start with 1d and 2d range
+searching, where the goal is to find all points in a given 1d or 2d
+interval. To accomplish this, we consider kd-trees, a natural
+generalization of BSTs when the keys are points in the plane (or
+higher dimensions). We also consider intersection problems, where the
+goal is to find all intersections among a set of line segments or
+rectangles.
+
+Exercises. (Sorry, we are still waiting for Coursera to migrate the
+exercises from the old platform.) Drill exercises on the lecture
+material.
+
+Programming Assignment: Kd-Trees. Your programming assignment is to
+implement kd-trees, which can form the basis for fast search/insert in
+geometric applications and in multidimensional databases.
+
+Job Interview Questions. Algorithmic interview questions based on the
+lecture material.
+
+Suggested readings. Section 3.3 in Algorithms, 4th edition.
+
+** 1d range
+One dimensional range search
+
+** Orthogonal line segment intersection search
+- Quadratic algorithm
+Check all pairs of line segments for intersection
+
+Nondegeneracy assumption
+All x and y coordinates are distinct
+
+Sweep-lin algorithm
+veritcal line that sweeps line from left to right
+
+each x coordinate is an event
+
+1. keep track of y intersections in a binary search tree
+2. when high right end point remove from bst
+3. high a vertical line
+   do a range search for y end points in bst 
+
+
+Running n ln n + R where R is number 
+
+Pf.
+Put x-coordinateds on a priority queue (or sor) <-- N log N
+Insert y-coordinates into BST <-- N log N
+Delete y-coordinates from BST <-- N log N
+Range searches in BST <-- N log N + R
+
+Analysis
+Sweep lin reduces 2d orthogonla line segment intersearcion search to 1d range search
+
+** kd trees
+Extension of BSTs. 
+
+Two dimensional keys
+2-d orthogonal range search
+
+** 1d interval search
+
+** Practice Quiz
+
+*** Red–black BST with no extra memory. Describe how to save the memory for storing the color information when implementing a red–black BST.
+
+- color bit
+Hint: modify the structure of the BST to encode the color information.
+
+*** Document search. Design an algorithm that takes a sequence of n document words and a sequence of m query words and find the shortest interval in which the m query words appear in the document in the order given. The length of an interval is the number of words in that interval.
+
+- use a kd tree
+
+Hint: for each word, maintain a sorted list of the indices in the document in which that word appears. Scan through the sorted lists of the query words in a judicious manner.
+
+
+*** Generalized queue. Design a generalized queue data type that supports all of the following operations in logarithmic time (or better) in the worst case.
+
+Create an empty data structure.
+Append an item to the end of the queue.
+Remove an item from the front of the queue.
+Return the ith item in the queue.
+Remove the ith item from the queue.
+
+- 1d
+
+Hint: create a red–black BST where the keys are integers and the values are the items such that the ith largest integer key in the red–black BST corresponds to the ith item in the queue.
+
+** Programming Assignment
+- https://www.coursera.org/learn/algorithms-part1/programming/wuF0a/kd-trees

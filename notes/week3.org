@@ -1,0 +1,185 @@
+* Week 3
+** Checklist
+- [X] Mergesort
+  - [X] Mergesort
+  - [X] Bottom-up Mergesort
+  - [X] Sorting complexit
+  - [X] Comparators
+  - [X] Stability
+  - [X] Practice Quiz
+- [ ] Quicksort
+  - [ ] Quicksort
+  - [ ] Selection
+  - [ ] Duplicate Keys
+  - [ ] System Sorts
+  - [ ] Practicice Quiz
+- [ ] Programming Assignment
+
+** Mergesort
+- Uses at most n lg n and 6 n lg n array accessses to sort any sie array of size N
+
+- How many compares does mergesort - the pure version without optimizations - make to sort an input array that is already sorted
+
+- linearithmic
+- It make ~ 1/2 N lg N compares, which is the best case for mergesort. We note that the optimized version that checks whether a[mid] <= a[mid+1] only requires about ~ N compares
+
+** Bottom-up Mergesort
+
+- How many passes (over the input array) does bottom-up mergewort make in the worst case
+
+- logarithmic
+
+** Stability
+- Stable sorts perserve the relative order of items with equal keys
+
+- Insertion sort and mergesort are stable but selection sort and shellsort are not
+
+** Interview Questions
+
+*** Merging with smaller auxiliary array. 
+Suppose that the subarray a[0] to a[n−1] is sorted and the subarray
+a[n] to a[2∗n−1] is sorted. How can you merge the two subarrays so
+that a[0] to a[2∗n−1] is sorted using an auxiliary array of length n
+(instead of 2n)?
+
+#+BEGIN_EXAMPLE
+- copy the left array into the auxillary array
+#+END_EXAMPLE
+
+Hint: copy only the left half into the auxiliary array.
+
+*** Counting inversions. 
+An inversion in an array a[] is a pair of entries a[i] and a[j] such
+that i<j but a[i]>a[j]. Given an array, design a linearithmic
+algorithm to count the number of inversions.
+
+#+BEGIN_EXAMPLE
+- split array
+- reverse second
+- iterate through both and count equal values
+#+END_EXAMPLE
+
+Hint: count while mergesorting.
+
+*** Shuffling a linked list.
+Given a singly-linked list containing n items, rearrange the items
+uniformly at random. Your algorithm should consume a logarithmic (or
+constant) amount of extra memory and run in time proportional to nlog⁡n
+in the worst case.
+
+#+BEGIN_EXAMPLE
+- put the list into an array
+- mergesort the array
+#+END_EXAMPLE
+
+Hint: design a linear-time subroutine that can take two uniformly shuffled linked lists of sizes n1 and n2 and combined them into a uniformly shuffled linked lists of size n1+n2.
+
+
+** Quicksort
+- Recursive
+- Does the recursive after it does the work. Mergesort does the work first then recursive
+
+
+- Shuffle
+- Partition
+  - entry a[j] is in place
+  - no larger entry to the left of j
+  - no smaller entry to the right of j
+- Sort each piece recursively
+
+
+ 1961 Tony Hoare
+
+
+ What is the expected running time of randomized quicksort to sort an array of n distinct keys when the array is already sorted?
+
+lineartithmic
+The expected number of compares is ~ 2n ln n
+
+** Selection
+
+
+Quick-select takes linear time on average
+
+
+What is the expected running time to find the median of an array of n distinct keys using randomized quickselect?
+- linear
+- This is the main advantage of quickselect over quicksort -- the expected number of compares is linear instead of linearithmic
+
+
+Using 3-day partitioning with quicksort is most effective when the input array has which of the following properties?
+- a few distinct items
+
+The goal of 3-way partitioning is to speed up quicksort in the presence of duplicate keys
+
+
+
+Why does Array.sort() use quicksort instead of mergesort when sorting primitive types?
+
+- uses less memory on typical inputs and faster on typical inputs
+
+Why does Array.sort() use  mergesort instead of quicksort when sorting reference types?
+
+- stability
+- n lg n
+
+** Interview Questions
+
+*** Nuts and bolts. 
+
+A disorganized carpenter has a mixed pile of n nuts and n bolts. The goal is to find the corresponding pairs of nuts and bolts. Each nut fits exactly one bolt and each bolt fits exactly one nut. By fitting a nut and a bolt together, the carpenter can see which one is bigger (but the carpenter cannot compare two nuts or two bolts directly). Design an algorithm for the problem that uses nlog⁡n compares (probabilistically).
+
+#+BEGIN_EXAMPLE
+- mergesort
+
+#+END_EXAMPLE
+
+Hint: modify the quicksort partitioning part of quicksort.
+
+Remark: This research paper gives an algorithm that runs in nlog4⁡n time in the worst case.
+- http://www.cs.ucla.edu/~rafail/PUBLIC/17.pdf
+
+
+*** Selection in two sorted arrays. 
+
+Given two sorted arrays a[] and b[], of sizes n1 and n2, respectively, design an algorithm to find the kth largest key. The order of growth of the worst case running time of your algorithm should be log⁡n, where n=n1+n2.
+
+    Version 1: n1=n2 and k=n/2
+    Version 2: k=n/2
+    Version 3: no restrictions
+
+#+BEGIN_EXAMPLE
+- mergesort both arrays together
+
+#+END_EXAMPLE
+
+Thank you for your response. 
+
+Hint: there are two basic approaches.
+
+    Approach A: Compute the median in a[] and the median in b[]. Recur in a subproblem of roughly half the size.
+    Approach B: Design a constant-time algorithm to determine whether a[i] is the kth largest key. Use this subroutine and binary search.
+
+Dealing with corner cases can be tricky.
+
+
+*** Decimal dominants. 
+
+Given an array with n keys, design an algorithm to find all values that occur more than n/10 times. The expected running time of your algorithm should be linear.
+
+#+BEGIN_EXAMPLE
+- sort and count
+
+#+END_EXAMPLE
+
+Hint: determine the (n/10)th largest key using quickselect and check if it occurs more than n/10 times.
+
+Alternate solution hint: use 9 counters.
+
+** Programming Assignment : Collinear Points
+- https://github.com/ISchwarz23/Algorithms-Part1---Assignments/tree/master/Week%203%20-%20Pattern%20Recognition/src
+- https://github.com/ISchwarz23/Algorithms-Part1---Assignments/blob/master/Week%203%20-%20Pattern%20Recognition/src/BruteCollinearPoints.java
+- https://github.com/yetingsky/Algorithms/blob/master/Part1As3/FastCollinearPoints.java
+- https://github.com/AlexJoz/Algorithms--Java-/blob/master/Week3-Collinear%20Points/FastCollinearPoints.java
+- https://github.com/yulunli/algorithms/blob/master/FastCollinearPoints.java
+- https://github.com/vctrl/Pattern-Recognition/blob/master/FastCollinearPoints.java
