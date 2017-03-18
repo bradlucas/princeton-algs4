@@ -86,3 +86,12 @@ Programming Assignment: 8 Puzzle
 ** Week 5 - Geometric Applications of BSTs
 
 Programming Assignment: Kd-Trees
+
+* Notes
+
+- https://github.com/bradlucas/princeton-algs4/tree/master/notes/week1.org
+- https://github.com/bradlucas/princeton-algs4/tree/master/notes/week2.org
+- https://github.com/bradlucas/princeton-algs4/tree/master/notes/week3.org
+- https://github.com/bradlucas/princeton-algs4/tree/master/notes/week4.org
+- https://github.com/bradlucas/princeton-algs4/tree/master/notes/week5.org
+- https://github.com/bradlucas/princeton-algs4/tree/master/notes/week6.org
