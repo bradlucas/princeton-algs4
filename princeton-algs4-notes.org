@@ -40,10 +40,13 @@ https://www.coursera.org/learn/algorithms-part1/home/welcome
 ** Installing Java
 http://algs4.cs.princeton.edu/mac/
 
+#+BEGIN_EXAMPLE
 $ which java-algs4
 /usr/local/bin/java-algs4
 (env) blucas.home:~/work/algo1/week1$ cat /usr/local/bin/java-algs4
 #!/bin/bash
+
+#+END_EXAMPLE
 
 # This must match the install directory.
 INSTALL=/usr/local/algs4
@@ -57,16 +60,20 @@ java -cp "${CLASSPATH}" "$@"
 
 *** HelloWorld
 
+#+BEGIN_EXAMPLE
 public class HelloWorld {
     public static void main(String[] args) { 
         System.out.println("Hello, World");
     }
 }
+#+END_EXAMPLE
 
+#+BEGIN_EXAMPLE
 javac HelloWorld.java
 
 checkstyle-algs4 HelloWorld.java
 findbugs-algs4 HelloWorld.class
+#+END_EXAMPLE
 
 
 * Homework
