@@ -1,0 +1,90 @@
+-*- mode:org -*-
+
+* Algorithms 1 - Princeton - 6 Weeks
+
+- Book
+- http://algs4.cs.princeton.edu/home/
+
+- Code
+- https://github.com/kevin-wayne/algs4
+- https://www.coursera.org/learn/algorithms-part1/lecture/RZW72/quick-union-improvements
+
+** Welcome Page
+
+https://www.coursera.org/learn/algorithms-part1/home/welcome
+
+- Week 1
+  - Assignments due February 26th
+  - Programming Assignment: Percolation
+- Week 2
+  - Assignments due March 5th
+- Week 3
+  - Assignments due March 12th
+- Week 4
+  - Assignments due March 19th
+- Week 5
+  - Assignments due March 26th
+- Week 6
+  - Assignments due April 10th
+
+
+    February 2017              March 2017               April 2017     
+     Su Mo Tu We Th Fr Sa     Su Mo Tu We Th Fr Sa     Su Mo Tu We Th Fr Sa 
+               1  2  3  4               1  2  3  4                        1 
+      5  6  7  8  9 10 11      5  6  7  8  9 10 11      2  3  4  5  6  7  8 
+     12 13 14 15 16 17 18     12 13 14 15 16 17 18      9 10 11 12 13 14 15 
+     19 20 21 22 23 24 25     19 20 21 22 23 24 25     16 17 18 19 20 21 22 
+     26 27 28                 26 27 28 29 30 31        23 24 25 26 27 28 29 
+                                                       30 
+** Installing Java
+http://algs4.cs.princeton.edu/mac/
+
+$ which java-algs4
+/usr/local/bin/java-algs4
+(env) blucas.home:~/work/algo1/week1$ cat /usr/local/bin/java-algs4
+#!/bin/bash
+
+# This must match the install directory.
+INSTALL=/usr/local/algs4
+
+# Sets the path to the textbook libraries.
+CLASSPATH=(.:${INSTALL}/algs4.jar)
+
+# Execute with textbook libraries in Java classpath.
+java -cp "${CLASSPATH}" "$@"
+(env) blucas.home:~/work/algo1/week1$ 
+
+*** HelloWorld
+
+public class HelloWorld {
+    public static void main(String[] args) { 
+        System.out.println("Hello, World");
+    }
+}
+
+javac HelloWorld.java
+
+checkstyle-algs4 HelloWorld.java
+findbugs-algs4 HelloWorld.class
+
+
+* Homework
+** Week 1 - Union−Find
+
+Programming Assignment: Percolation
+
+** Week 2 - Stacks and Queues
+
+Programming Assignment: Deques and Randomized Queues
+
+** Week 3 - Mergesort
+
+Programming Assignment: Collinear Points
+
+** Week 4 - Priority Queues
+
+Programming Assignment: 8 Puzzle
+
+** Week 5 - Geometric Applications of BSTs
+
+Programming Assignment: Kd-Trees
